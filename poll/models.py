@@ -16,6 +16,9 @@ class Option(models.Model):
         auto_now=True
     )
 
+    def __str__(self):
+        return self.content
+
 
 class Poll(models.Model):
     STATUS_CHOICES = (
@@ -48,6 +51,10 @@ class Poll(models.Model):
         verbose_name="수정된 날짜",
         auto_now=True
     )
+
+    def __str__(self):
+        return self.title
+    
 
 class Vote(models.Model):
     name = models.CharField(
