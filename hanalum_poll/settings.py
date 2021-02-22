@@ -10,23 +10,38 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-from pathlib import Path
+import json
 import os
+from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+from django.core.exceptions import ImproperlyConfigured
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+secret_file = os.path.join(BASE_DIR, "secrets.json")  # secrets.json 파일 위치를 명시
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
+with open(secret_file) as f:
+    secret_text = json.loads(f.read())
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'xb(x^4^j*ph_*2w(-m*!vtk!$166n-c-cq&+go#1#z&c+ar#c2'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+def get_secret(setting, secrets=secret_text):
+    """
+    secrets.json으로부터, 값을 가져오는 함수입니다.
+    """
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = "Set the {} environment variable".format(setting)
+        raise ImproperlyConfigured(error_msg) from KeyError(error_msg)
 
-ALLOWED_HOSTS = []
+
+SITE_ID = 1
+
+SECRET_KEY = get_secret("SECRET_KEY")
+
+DEBUG = False
+
+ALLOWED_HOSTS = ['34.220.59.114', '127.0.0.1', 'poll.hanalum.kr']
 
 
 # Application definition
@@ -81,9 +96,13 @@ WSGI_APPLICATION = 'hanalum_poll.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "postgres",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
+        "HOST": "db",
+        "PORT": 5444,
     }
 }
 

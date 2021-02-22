@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    expose:
+    - "5444"
+    ports:
+      - "5444:5444"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./backups:/home/backups
+    command: -p 5444
+  poll:
+    build: .
+    command: >
+      sh -c  "python manage.py makemigrations &&
+              python manage.py migrate &&
+              python manage.py runserver 0.0.0.0:3005 --insecure"
+    ports:
+      - "3005:3005"
+    volumes:
+      - .:/poll
