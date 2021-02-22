@@ -1,0 +1,54 @@
+{% comment %} 
+  poll
+{% endcomment %}
+{% load bootstrap5 %}
+{% load fontawesome_5 %}
+{% load static %}
+<html>
+  <head>
+    <title> 한아름 투표 완료 </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+      }
+      main {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 1000px;
+        height: auto;
+      }
+    </style>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+      crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <main>
+      <div class="row h-100 justify-content-center align-items-center">
+        <div class = "col-10">
+        <div class="card p-3 m-3">
+            <div class="card-header text-center">
+                <img class="main-icon" src= "{% static 'no-title-logo.png' %}" alt="" width="140" height="140">
+                <h2 class="text-center">
+                    "{{poll.title}}" 투표를 참가 완료하셨습니다.
+                </h2>
+            </div>
+            <div class="card-content text-center">
+                <a href="{% url 'poll:result' poll.id %}"> 투표 결과 확인하러 가기 </a>
+            </div>
+        </div>
+      </div>
+    </main>
+
+
+  </body>
+</html>
